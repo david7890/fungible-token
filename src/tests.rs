@@ -5,9 +5,12 @@ const USERS: &[u64] = &[3, 4, 5];
 
 fn init_with_mint(sys: &System) {
     sys.init_logger();
-
+    //Initialization of program structure 
+    //function to load the current program.
     let ft = Program::current(sys);
-
+    
+    //manda mensaje al programa ft 
+    //metodo send primer parametro sender id, segundo param payload
     let res = ft.send(
         USERS[0],
         InitConfig {
@@ -33,8 +36,11 @@ fn init_with_mint(sys: &System) {
 
 #[test]
 fn mint() {
+    //Initialization of the common environment for running smart contracts
+    //// This emulates node's and chain's behavior.
     let sys = System::new();
     init_with_mint(&sys);
+    
     let ft = sys.get_program(1);
     let res = ft.send(USERS[0], FTAction::BalanceOf(USERS[0].into()));
     assert!(res.contains(&(USERS[0], FTEvent::Balance(1000000).encode())));
